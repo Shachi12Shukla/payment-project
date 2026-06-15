@@ -84,7 +84,9 @@ userRouter.put('/', authMiddleware, async (req,res)=> {
 
     await userModel.findByIdAndUpdate(userId, parsedBody.data);
 
-    res.status(200).send("updated successfully");
+    res.status(200).json({
+        message: "Information updated successfully"
+    });
 });
 
 
