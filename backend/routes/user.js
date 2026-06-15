@@ -16,7 +16,9 @@ userRouter.post('/signup' , async (req,res) => {
     const userExists = await userModel.findOne({username: username});
 
     if(userExists){
-        res.status(403).send("user already exists");
+        res.status(403).json({
+            message: "User already exists"
+        })
         return;
     }
 
@@ -47,10 +49,10 @@ userRouter.post('/signin', async (req,res) => {
         password
     });
 
-    console.log(userExists);
-
     if(!userExists){
-        res.status(403).send("Incorrect credentials");
+        res.status(403).json({
+            message: "Incorrect credentials"
+        })
         return;
     };
 

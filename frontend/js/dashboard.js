@@ -4,6 +4,14 @@ if (!token) {
     window.location.href = "signin.html";
 }
 
+const payload =
+    JSON.parse(
+        atob(token.split(".")[1])
+    );
+
+const currentUserId =  payload.userId;
+
+
 async function loadBalance() {
 
     try {
@@ -39,7 +47,12 @@ async function fetchUsers(filter = "") {
 
         const data = await response.json();
 
-        renderUsers(data.user);
+        const filteredUsers =
+            data.user.filter(
+                user => user._id !== currentUserId
+        );
+
+        renderUsers(filteredUsers);
 
     }
     catch (error) {
