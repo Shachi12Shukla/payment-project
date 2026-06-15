@@ -28,7 +28,7 @@ accountRouter.post('/transfer', authMiddleware , async (req,res)=> {
     session.startTransaction();
 
     const userId = req.userId;
-    const transfer_user_id = req.body.transfer_user_id;  // 
+    const transfer_user_id = req.body.transfer_user_id;  
     const amount = req.body.amount;  // number
 
     const account = await accountModel.findOne( {userId}).session(session);

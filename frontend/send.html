@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Send Money</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div class="container">
+
+        <div class="card">
+
+            <h2>Send Money</h2>
+
+            <h3 id="receiverName">
+                Loading...
+            </h3>
+
+            <input
+                type="number"
+                id="amount"
+                placeholder="Enter amount"
+            >
+
+            <button
+                onclick="transferMoney()"
+            >
+                Transfer
+            </button>
+
+            <button
+                onclick="goBack()"
+                style="margin-left:10px"
+            >
+                Cancel
+            </button>
+
+        </div>
+
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/send.js"></script>
+
+</body>
+</html>
