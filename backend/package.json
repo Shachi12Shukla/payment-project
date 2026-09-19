@@ -1,0 +1,33 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "A PayTM-inspired full-stack wallet application that enables users to register, authenticate, view account balances, search users, and transfer money securely using JWT-based authentication and MongoDB.",
+  "homepage": "https://github.com/Shachi12Shukla/payment-project#readme",
+  "bugs": {
+    "url": "https://github.com/Shachi12Shukla/payment-project/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shachi12Shukla/payment-project.git"
+  },
+  "license": "ISC",
+  "author": "shachi shukla",
+  "type": "module",
+  "main": "/src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js",
+    "dev" : "nodemon src/index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.1",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.10.1",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

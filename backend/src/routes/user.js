@@ -1,6 +1,7 @@
 import { Router } from "express"
 import jwt from "jsonwebtoken"
 import zod from "zod"
+import bcrypt from "bcrypt"
 
 import { userModel , accountModel } from "../db.js"
 
@@ -22,20 +23,24 @@ userRouter.post('/signup' , async (req,res) => {
         return;
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const newUser = await userModel.create({
         username,
-        password,
+        password: hashedPassword,
         firstName,
         lastName
     });
 
     const newAccount = await accountModel.create({
-        balance: Math.floor(Math.random() * 15000) + 1,
+        balance: Math.floor(Math.random() * (20000 - 10000 + 1)) + 10000,
         userId: newUser._id
     });
 
     res.status(201).json({
         id: newUser._id,
+        newUser: newUser.username,
+        userBalance: newAccount.balance,
         message: "You have signed up"
     });
  
@@ -44,24 +49,41 @@ userRouter.post('/signup' , async (req,res) => {
 userRouter.post('/signin', async (req,res) => {
     const {username, password} = req.body;
 
-    const userExists = await userModel.findOne({
-        username,
-        password
+    const user = await userModel.findOne({
+        username
     });
 
-    if(!userExists){
+
+    if(!user){
         res.status(403).json({
             message: "Incorrect credentials"
         })
         return;
     };
 
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if(!passwordMatch){
+        return res.status(401).json({
+            message: "Incorrect credentials"
+        });
+    }
+
     const token = jwt.sign({
-        userId: userExists._id
-    },JWT_SECRET);
+        userId: user._id
+    },JWT_SECRET, {
+        "expiresIn" : "7d"
+    });
+
 
     res.status(200).json({
         token,
+        user: {
+            username: user.username,
+            firstName: user.firstName,
+            lastName: user.lastName
+            
+        },
         message: "Logged in"
     });
 });
@@ -84,18 +106,22 @@ userRouter.put('/', authMiddleware, async (req,res)=> {
 
     const userId = req.userId;
 
-    await userModel.findByIdAndUpdate(userId, parsedBody.data);
+    const updatedInfo = await userModel.findByIdAndUpdate(userId, parsedBody.data);
 
     res.status(200).json({
+        updatedInfo,
         message: "Information updated successfully"
     });
 });
 
 
-userRouter.get('/bulk', async (req,res)=> {
+userRouter.get('/bulk', authMiddleware, async (req,res)=> {
     const filter = req.query.filter || "";
+    const userId = req.userId;
 
     const users = await userModel.find({
+        _id: {$ne: userId},
+
         $or: [{
             firstName: {
                 "$regex" : filter
@@ -104,6 +130,11 @@ userRouter.get('/bulk', async (req,res)=> {
             lastName: {
                 "$regex" : filter
             }
+        },  {  
+            username: {
+                "$regex":  filter
+            }
+        
         }]
     });
 

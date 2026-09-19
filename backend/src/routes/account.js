@@ -36,6 +36,7 @@ accountRouter.post('/transfer', authMiddleware , async (req,res)=> {
     // insufficient balance
     if(account.balance < amount){
         res.status(400).send("insufficient balance");
+        session.abortTransaction();
         return;
     }
 
@@ -44,16 +45,19 @@ accountRouter.post('/transfer', authMiddleware , async (req,res)=> {
     // invalid account 
     if(!toAccount){
         res.status(404).send("Invalid account");
+        session.abortTransaction();
         return;
     }
 
     // perform transaction
-    await accountModel.updateOne({userId: userId}, {$inc: {balance: -amount} }).session(session);
-    await accountModel.updateOne({userId : transfer_user_id}, {$inc: {balance: amount} }).session(session);
+    const fromUpdatedBalance = await accountModel.updateOne({userId: userId}, {$inc: {balance: -amount} }).session(session);
+    const toUpdatedBalance = await accountModel.updateOne({userId : transfer_user_id}, {$inc: {balance: amount} }).session(session);
 
     // commit transaction
     await session.commitTransaction();
     res.status(200).json({
+        fromBalance : fromUpdatedBalance,
+        toBalance: toUpdatedBalance,
         message: "transfer successfull"
     });
     

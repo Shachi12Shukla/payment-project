@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-import ref from 'process'
 
 import {MONGO_URI} from './config.js'
 
