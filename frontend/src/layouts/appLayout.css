@@ -1,0 +1,65 @@
+/* =========================
+   APP LAYOUT
+========================= */
+
+.app-layout {
+  min-height: 100vh;
+  width: 100%;
+
+  background: #f6f8fc;
+}
+
+
+/* =========================
+   MAIN CONTENT
+========================= */
+
+.main-content {
+  min-height: 100vh;
+
+  margin-left: 240px;
+  padding: 32px 40px;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================
+   CONTENT CONTAINER
+========================= */
+
+.main-content > * {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 768px) {
+
+  .main-content {
+    margin-left: 210px;
+    padding: 28px 24px;
+  }
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+  .main-content {
+    margin-left: 72px;
+    padding: 24px 18px;
+  }
+
+}
+
