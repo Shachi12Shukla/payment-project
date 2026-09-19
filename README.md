@@ -1,196 +1,116 @@
 # PayWallet
 
-A PayTM-inspired full-stack wallet application that enables users to register, authenticate, view account balances, search users, and transfer money securely using JWT-based authentication and MongoDB.
+A PayTM-inspired full-stack wallet app for user signup/signin, balance checks, user search, and secure money transfers using JWT authentication and MongoDB.
+
+**Live demo:** [paywallet-five.vercel.app](https://paywallet-five.vercel.app)
 
 ## Features
-
-* User Signup and Signin
-* JWT-based Authentication
-* View Account Balance
-* Search Users by Name
-* Transfer Money Between Users
-* Secure Backend APIs
-* Responsive Frontend using HTML, CSS, and JavaScript
+- Signup / Signin with JWT authentication
+- View account balance
+- Search users by name
+- Transfer money between users
+- Password hashing with bcrypt
+- Secure backend APIs
 
 ## Tech Stack
+MERN stack
 
-### Frontend
-
-* HTML
-* CSS
-* JavaScript (Vanilla JS)
-
-### Backend
-
-* Node.js
-* Express.js
-
-### Database
-
-* MongoDB
-* Mongoose
-
-### Authentication
-
-* JSON Web Tokens (JWT)
+- **Frontend:** React.js
+- **Backend:** Node.js, Express.js
+- **Database:** MongoDB, Mongoose
+- **Auth:** JSON Web Tokens (JWT), bcrypt
+- **Other:** dotenv, CORS
 
 ## Project Structure
-
-```text
+```
 payment-project/
-│
 ├── backend/
-│   ├── routes/
-│   ├── middleware.js
-│   ├── db.js
-│   ├── config.js
-│   └── index.js
-│
+│   ├── src/
+│   │   ├── routes/
+│   │   │   ├── index.js
+│   │   │   ├── user.js
+│   │   │   └── account.js
+│   │   ├── middleware.js
+│   │   ├── db.js
+│   │   ├── config.js
+│   │   └── index.js
+│   ├── package.json
+│   └── package-lock.json
 └── frontend/
-    ├── css/
-    ├── js/
-    ├── signup.html
-    ├── signin.html
-    ├── dashboard.html
-    └── send.html
+    ├── src/
+    │   ├── components/
+    │   ├── pages/
+    │   └── App.jsx
+    └── public/
 ```
 
 ## API Endpoints
 
-### User Routes
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/v1/user/signup` | Register a new user |
+| POST | `/api/v1/user/signin` | Authenticate a user |
+| GET | `/api/v1/user/bulk?filter=<name>` | Search users by name  (requires `token` header)|
+| GET | `/api/v1/account/balance` | Get account balance (requires `token` header) |
+| POST | `/api/v1/account/transfer` | Transfer money (requires `token` header) |
 
-#### Signup
+## Frontend Routes
 
-```http
-POST /api/v1/user/signup
-```
+| Path | Page | Access |
+|---|---|---|
+| `/` | Redirects to signin/dashboard | Public |
+| `/user/signup` | Signup | Public |
+| `/user/signin` | Signin | Public |
+| `/user/dashboard` | Dashboard (balance + user search) | Protected |
+| `/user/send-money` | Send Money | Protected |
+| `/transfer-success` | Transfer Success | Protected |
 
-Request Body:
-
-```json
-{
-  "username": "john123",
-  "password": "password123",
-  "firstName": "John",
-  "lastName": "Doe"
-}
-```
-
-#### Signin
-
-```http
-POST /api/v1/user/signin
-```
-
-Request Body:
-
-```json
-{
-  "username": "john123",
-  "password": "password123"
-}
-```
-
-### Account Routes
-
-#### Get Balance
-
-```http
-GET /api/v1/account/balance
-```
-
-Headers:
-
-```http
-token: <jwt_token>
-```
-
-#### Transfer Money
-
-```http
-POST /api/v1/account/transfer
-```
-
-Headers:
-
-```http
-token: <jwt_token>
-```
-
-Request Body:
-
-```json
-{
-  "transfer_user_id": "user_id",
-  "amount": 500
-}
-```
-
-### User Search
-
-```http
-GET /api/v1/user/bulk?filter=<name>
-```
-
-## Installation & Setup
-
-### 1. Clone Repository
+## Setup
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/Shachi12Shukla/payment-project
 cd payment-project
 ```
 
-### 2. Install Backend Dependencies
-
+**Backend:**
 ```bash
 cd backend
 npm install
 ```
 
-### 3. Configure Environment Variables
-
-Create a `.env` file inside the backend directory:
-
-```env
+Create a `.env` file in `backend/`:
+```
 MONGODB_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
+FRONTEND_URL=http://localhost:3000
+PORT=3000
 ```
-
-### 4. Start Server
 
 ```bash
 npm start
 ```
+Runs at `http://localhost:3000`.
 
-The application will run on:
+**Frontend:**
+```bash
+cd frontend
+npm install
+```
 
-```text
-http://localhost:3000
+Create a `.env` file in `frontend/`:
+```
+VITE_API_URL=your_base_url
+```
+
+```bash
+npm run dev
 ```
 
 ## Future Improvements
-
-* Password Hashing using bcrypt
-* Transaction History
-* Profile Management
-* Real-Time Notifications
-* Account Statements
-* Pagination for User Search
-* Better UI/UX
-
-## Learning Outcomes
-
-Through this project, I gained hands-on experience with:
-
-* REST API Development
-* MongoDB and Mongoose
-* JWT Authentication
-* Express Middleware
-* Frontend-Backend Integration
-* CRUD Operations
-* Client-Side State Management using Local Storage
+- Transaction history
+- Profile management
+- Real-time notifications
+- Pagination for user search
 
 ## Author
-
 Shachi Shukla
